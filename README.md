@@ -3,7 +3,7 @@ this is the project records some common basics of python language and pkgs
 ### topics
 * math
 * thread
-* mysql
+* db
 * oop & class
 * file
 * exceptions
