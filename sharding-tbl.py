@@ -1,12 +1,13 @@
 # coding=utf-8
 import MySQLdb
 from contextlib import closing
+import conf.db_config as DBConfig
 
 conn = MySQLdb.connect(
-    host='localhost',
-    port=3306,
-    user='tian',
-    passwd='1234',
+    host=DBConfig.LOCAL_HOST,
+    port=DBConfig.LOCAL_PORT,
+    user=DBConfig.LOCAL_USER,
+    passwd=DBConfig.LOCAL_PASSWD,
     db='db_py',
 )
 
@@ -18,12 +19,23 @@ create_tbl_tpl = '''
         `value` VARCHAR(20) NOT NULL,
         PRIMARY KEY (`id`));
 '''
+create_tbl_all = '''
+    CREATE TABLE tbl_all (
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `name` INT NOT NULL,
+        `value` VARCHAR(20) NOT NULL,
+        PRIMARY KEY (`id`));
+'''
 drop_tbl_tpl = "drop table if exists tbl_%s"
 queryall_sql = "select * from tbl_all"
 TBL_NUM = 10
 
 
 def init():
+    # create table_all
+    with closing(conn.cursor()) as cur:
+        cur.execute(create_tbl_all)
+        conn.commit()
     # init data
     with closing(conn.cursor()) as cur:
         for i in range(0, 10000):
@@ -33,7 +45,7 @@ def init():
             except Exception, e:
                 pass
         conn.commit()
-    # create tbls
+    # create table_xxx
     for i in range(0, TBL_NUM):
         create_tbl(i)
 
