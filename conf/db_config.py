@@ -1,16 +1,7 @@
 # coding=utf-8
-# ppc
-PPC_HOST = ''
-PPC_PORT = ''
-PPC_USER = ''
-PPC_PASSWD = ''
-# cc
-CC_HOST = ''
-CC_PORT = ''
-CC_USER = ''
-CC_PASSWD = ''
 # local
-LOCAL_HOST = ''
-LOCAL_PORT = ''
-LOCAL_USER = ''
-LOCAL_PASSWD = ''
+LOCAL_HOST = '127.0.0.1'
+LOCAL_PORT = 3306
+LOCAL_USER = 'kevin'
+LOCAL_PASSWD = '1234'
+LOCAL_DB = 'db_py'
