@@ -1,4 +1,7 @@
 # coding=utf-8
+TYPE_LOCAL = "local"
+TYPE_PCC = "public_cloud"
+TYPE_CC = "channel_center"
 # local
 LOCAL_HOST = '127.0.0.1'
 LOCAL_PORT = 3306
