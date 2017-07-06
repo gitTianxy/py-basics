@@ -6,6 +6,8 @@ from datetime import datetime
 
 
 class MyThread(threading.Thread):
+    __inner_prop = "class inner prop"
+
     def __init__(self, operation, dur):
         threading.Thread.__init__(self)
         self.operation = operation
@@ -27,6 +29,7 @@ class MyThread(threading.Thread):
     @staticmethod
     def cb_func(request, name):
         mutex.acquire()
+        print MyThread.__inner_prop
         if request.exception:
             print '%s is Failed!!!' % name
         else:
@@ -54,10 +57,7 @@ def callback_fn(request, name):
     mutex.release()
 
 
-mutex = threading.Lock()
-if __name__ == '__main__':
-    print 'main thread START'
-    #
+def call_method_demo():
     print '------------- use method ----------------'
     works = [(None, {'name': 'listen music', 'dur': 5}), (None, {'name': 'watch TV', 'dur': 10})]
     pool = threadpool.ThreadPool(5)
@@ -65,7 +65,9 @@ if __name__ == '__main__':
     for req in requests:
         pool.putRequest(req)
     pool.wait()
-    #
+
+
+def call_class_demo():
     print '-------------- use Class ----------------'
     thread1 = MyThread('listen music', 5)
     thread2 = MyThread('watch TV', 10)
@@ -75,5 +77,14 @@ if __name__ == '__main__':
     for req in requests:
         pool.putRequest(req)
     pool.wait()
+
+
+mutex = threading.Lock()
+if __name__ == '__main__':
+    print 'main thread START'
+    #
+    #call_method_demo()
+    #
+    call_class_demo()
     #
     print 'main thread FINISH'
