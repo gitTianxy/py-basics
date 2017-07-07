@@ -12,4 +12,6 @@ try:
     finally:
         print 'here is when all the block above finished'
 except ArithmeticError, e:
-    print e.args
+    print "ArithmeticError: ", e.message
+except Exception, e:
+    print "Exception: ", e.message
