@@ -1,21 +1,21 @@
-import math_demo
+import math
 import random
 
 # basic math functions
 print 'abs of -5 and -5.00: %s, %s' % (abs(-5), abs(-5.00))
 
-print 'float abs of -5 and -5.00: %s, %s' % (math_demo.fabs(-5), math_demo.fabs(-5.00))
-print 'ceil of 1.05: %s' % math_demo.ceil(1.05)
-print 'floor of 1.05: %s' % math_demo.floor(1.05)
-print 'round(1.05), round(1.05, 1), round(1.05, 3) of 1.05: %s, %s, %s' % (round(1.05), round(1.05, 1), round(1.05, 3))
+print 'float abs of -5 and -5.00: %s, %s' % (math.fabs(-5), math.fabs(-5.00))
+print 'ceil of 1.05: %s' % math.ceil(1.05)
+print 'floor of 1.05: %s' % math.floor(1.05)
+print 'round(1.05)=%s, round(1.05, 1)=%s, round(1.05, 3)=%s' % (round(1.05), round(1.05, 1), round(1.05, 3))
 
-print 'exp(1): ', math_demo.exp(1)
-print 'ln(e): ', math_demo.log(math_demo.e)
-print 'log10(100): ', math_demo.log(100, 10)
+print 'exp(1): ', math.exp(1)
+print 'ln(e): ', math.log(math.e)
+print 'log10(100): ', math.log(100, 10)
 
 print "2^3, 2.0^3.0--use '**': %s, %s" % (2 ** 3, 2.0 ** 3.0)
-print "2^3, 2.0^3.0--use 'math.pow()': %s, %s" % (math_demo.pow(2, 3), math_demo.pow(2.0, 3.0))
-print "sqrt(4): ", math_demo.sqrt(4)
+print "2^3, 2.0^3.0--use 'math.pow()': %s, %s" % (math.pow(2, 3), math.pow(2.0, 3.0))
+print "sqrt(4): ", math.sqrt(4)
 
 # comparison functions
 print '2 is less than 3: ', cmp(2, 3) == -1
@@ -37,8 +37,8 @@ print  "    ", order
 print "trigonometric functions..."
 
 # math constant
-print "PI: ", math_demo.pi
-print "e: ", math_demo.e
+print "PI: ", math.pi
+print "e: ", math.e
 
 # list generator
 print 'generate a num list: ', range(0, 10, 2)

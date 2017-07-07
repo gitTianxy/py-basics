@@ -19,7 +19,7 @@ def write_excel():
     worksheet = workbook.add_sheet('My Worksheet')
     for idx in range(0, len(lines)):
         worksheet.write(idx, 0, label=lines[idx])
-    workbook.save('file_excel.xls')
+    workbook.save('result/file_excel.xls')
 
 if __name__=="__main__":
     write_excel()
