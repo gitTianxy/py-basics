@@ -1,5 +1,12 @@
 # coding=utf-8
 
+"""
+OPERATIONS on list
+1. sort
+2. filter
+3. map
+4. reduce
+"""
 import random
 
 # prepare data
@@ -26,3 +33,29 @@ list1_copy.sort()
 print 'list1_after_copy_sort: ', list1
 print 'list1_copy_after_sort: ', list1_copy
 
+# filter
+print 'filter item>5 --------------'
+for i in filter(lambda s: s > 50, list1):
+    print i
+
+
+# map
+def get_mod(num):
+    global span
+    return num % span
+
+
+span = 10
+print 'map use func ---------------'
+mod_list_func = map(get_mod, list1)
+for mod in mod_list_func:
+    print mod
+
+print 'map use lambda ---------------'
+mod_list_lambda = map(lambda num: num % span, list1)
+for mod in mod_list_lambda:
+    print mod
+
+# reduce
+print 'reduce ----------------'
+print reduce(lambda s1, s2: s1 + s2, list1)
