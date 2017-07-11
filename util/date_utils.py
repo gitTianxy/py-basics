@@ -1,5 +1,9 @@
 # coding=utf-8
-
+"""
+__title__ date-util
+__author__ Kevin Tian
+__date__ 2017.7
+"""
 import datetime, time, calendar
 
 
