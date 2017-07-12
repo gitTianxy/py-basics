@@ -1,3 +1,4 @@
+# coding=utf-8
 import math
 import random
 
@@ -40,5 +41,13 @@ print "trigonometric functions..."
 print "PI: ", math.pi
 print "e: ", math.e
 
-# list generator
+'''
+list generator
+    1. range(start, end, step): 用于返回一个列表
+    1. xrange(start, end, step): 用于遍历
+'''
 print 'generate a num list: ', range(0, 10, 2)
+
+print 'generate a num list generator--for iteration: '
+for num in xrange(0, 10, 2):
+    print num
