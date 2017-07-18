@@ -1,7 +1,5 @@
 # coding=utf-8
 TYPE_LOCAL = "local"
-TYPE_PPC = "public_cloud"
-TYPE_CC = "channel_center"
 
 class DbConfig:
     """

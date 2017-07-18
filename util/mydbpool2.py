@@ -15,7 +15,7 @@ class MyDbUtils:
     @staticmethod
     def get_connect(db_config):
         if not isinstance(db_config, DBConfig.DbConfig):
-            raise ValueError("db_config should be instance of 'com.pptv.conf.db_config2.DbConfig'")
+            raise ValueError("db_config should be instance of '../db_config2.DbConfig'")
 
         pool_key = "%s:%s" % (db_config.type, db_config.db)
         if MyDbUtils.__pools.get(pool_key) is None:
