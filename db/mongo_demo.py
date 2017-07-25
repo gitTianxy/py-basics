@@ -105,9 +105,19 @@ class TestEntity(MEntityBase):
         super(TestEntity, self).__init__(entity)
         self.f1 = entity.get("f1")
         self.f2 = entity.get("f2")
+        self.innerEntity = None
+        if entity.get("innerEntity") is not None:
+            self.innerEntity = InnerEntity(entity.get("innerEntity").get("f1"), entity.get("innerEntity").get("f2"))
+
+
+class InnerEntity:
+    def __init__(self, f1, f2):
+        self.f1 = f1
+        self.f2 = f2
 
 
 if __name__ == "__main__":
+    '''
     entity_dic = {
         "f1": "field1",
         "f2": "field2"
@@ -119,3 +129,4 @@ if __name__ == "__main__":
     old_entity = get_entity(ObjectId('597742b99a52c13b04d707ab'), None)
     old_entity["f2"] = "field2_NEW"
     save_entity(TestEntity(old_entity))
+    '''
