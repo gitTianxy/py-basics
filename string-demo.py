@@ -6,3 +6,9 @@ sql_tpl = '''
     '''
 
 print sql_tpl
+
+print ('__' in '__init__')
+
+print ('__init__'.startswith('__'))
+
+print ('__init__'.endswith('__'))
