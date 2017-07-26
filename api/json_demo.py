@@ -39,7 +39,7 @@ class MEntityBase(object):
         self.update_time = datetime.datetime.utcnow()
 
     @abc.abstractmethod
-    def to_json(self):
+    def to_dic(self):
         pass
 
 
@@ -58,13 +58,13 @@ class MEntity(MEntityBase):
             inner_f2 = entity.get("innerEntity").get("inner_f2")
             self.innerEntity = InnerEntity(inner_f1, inner_f2)
 
-    def to_json(self):
+    def to_dic(self):
         self.pre_persist()
         entity_json = {}
         dics = self.__dict__.iteritems()
         for k, v in dics:
             if isinstance(v, InnerEntity):
-                entity_json[k] = v.to_Json()
+                entity_json[k] = v.to_dic()
             else:
                 entity_json[k] = v
         return entity_json
@@ -75,7 +75,7 @@ class InnerEntity:
         self.f1 = f1
         self.f2 = f2
 
-    def to_Json(self):
+    def to_dic(self):
         entity_json = {}
         dics = self.__dict__.iteritems()
         for k, v in dics:
@@ -92,6 +92,20 @@ def json_default(o):
         return o.__dict__
 
 
+class MyEncoder(json.JSONEncoder):
+    """
+    encoder for encoding an obj into json-str
+    """
+
+    def default(self, o):
+        if type(o) is datetime.datetime:
+            return DateUtils.dt2str(o, DateUtils.DATE_PATTERN_LONG)
+        elif type(o) is ObjectId:
+            return str(o)
+        else:
+            return o.__dict__
+
+
 if __name__ == "__main__":
     inner_dic = {
         "inner_f1": "inner_f1",
@@ -102,5 +116,6 @@ if __name__ == "__main__":
         "f2": "field2",
         "innerEntity": inner_dic
     }
-    pprint.pprint(MEntity(dic).to_json())
+    pprint.pprint(MEntity(dic).to_dic())
     # pprint.pprint(json.dumps(obj=MEntity(dic), default=json_default))
+    # pprint.pprint(json.dumps(MEntity(dic), cls=MyEncoder))
