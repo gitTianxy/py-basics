@@ -8,6 +8,6 @@ def loadJson(jsonPath):
 
 if __name__ == '__main__':
     # load json
-    data = loadJson('./data/statistic_170616-170623.json')
+    data = loadJson('../data/statistic_170616-170623.json')
     for item in data:
         print "fid: ", item['fid']

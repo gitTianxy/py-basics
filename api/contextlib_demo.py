@@ -80,7 +80,8 @@ class ContextManagerDemo:
     @contextmanager
     def make_context(name):
         """
-        contextmanager用于给一个对象'添加上下文'
+        contextmanager用于: 给一个对象'添加上下文'.
+        这样做的好处是: 上下文逻辑独立于被修饰对象
         """
         print 'before', name, 'do job'
         yield ContextManagerDemo.ObjWithoutContext(name)
