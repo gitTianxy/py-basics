@@ -1,5 +1,10 @@
 # encoding=utf-8
-
+"""
+3 forms of logging conf:
+    1. file based config - logging.config.fileConfig
+    2. dict based config (recommended) - logging.config.dictConfig
+    3. coded config
+"""
 import logging
 from logging.config import fileConfig
 from logging.config import dictConfig
@@ -81,4 +86,3 @@ if __name__ == "__main__":
     FileConfigLog().do_logging()
     CodeConfigLog().do_logging()
     DictConfigLog().do_logging()
-
