@@ -1,6 +1,6 @@
 # !/usr/bin/python
 # -*- coding: UTF-8 -*-
-'''
+"""
 # Python从设计之初就已经是一门面向对象的语言。
 # 构建python类时关注如下几个概念：
     1. 类(Class): 用来描述具有相同的属性和方法的对象的集合。它定义了该集合中每个对象所共有的属性和方法。对象是类的实例。
@@ -17,7 +17,7 @@
 # 类关键字
     * class
     * self
-    * instancs.__class__
+    * instances.__class__
     * object: 公共父类
     * super(Child, self): 访问父类
 # python命名规则
@@ -40,7 +40,7 @@
     * 引用计数
     * 循环引用排查
     * 大对象排查
-'''
+"""
 
 import gc
 
@@ -139,11 +139,12 @@ class Child(Parant):
     childAttr = None
 
     def __init__(self):
-        super(Child, self).__init__() # 调用此方法则父类中必须写object
+        super(Child, self).__init__()  # 调用此方法则父类中必须写object
         print 'call child constructor'
 
     def childMethod(self):
         print 'call child method'
+
 
 print '------------------'
 c = Child()
