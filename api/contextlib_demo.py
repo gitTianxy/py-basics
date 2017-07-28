@@ -111,6 +111,12 @@ class ClosingDemo:
 
     @staticmethod
     def perform():
+        """
+        close的作用:
+            1. 将一个包含close方法的对像自动包装__enter__和__exit__
+            2. 在__exit__内部执行对象的close方法
+        :return:
+        """
         with closing(ClosingDemo.ret_obj_with_close()) as o:
             o.do_job()
 
@@ -120,7 +126,7 @@ class ClosingDemo:
 
     class ObjWithClose:
         """
-        obj without context
+        obj with close
         """
 
         def __init__(self):
