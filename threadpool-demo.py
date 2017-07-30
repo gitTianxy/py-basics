@@ -1,4 +1,7 @@
 # coding=utf-8
+"""
+threadpool module demo
+"""
 from time import sleep
 import threading
 import threadpool
@@ -83,7 +86,7 @@ mutex = threading.Lock()
 if __name__ == '__main__':
     print 'main thread START'
     #
-    #call_method_demo()
+    # call_method_demo()
     #
     call_class_demo()
     #

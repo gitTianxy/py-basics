@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-利用multiprocessing.pool
+multiprocessing.pool.ThreadPool demo
 """
 from time import sleep
 import threading
