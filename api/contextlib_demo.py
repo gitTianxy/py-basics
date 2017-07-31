@@ -35,7 +35,7 @@ class WithDemo:
     def ret_obj_with_context():
         o = WithDemo.ObjWithContext()
         print 'return an', o.__class__.__name__
-        return WithDemo.ObjWithContext()
+        return o
 
     class ObjWithContext:
         """
