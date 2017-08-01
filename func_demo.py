@@ -6,6 +6,7 @@ this package exhibits the 'functional programming' with python, which includes:
     3. function decorator
     4. partial function
     5. lambda function
+    6. variadic parameter
 """
 import functools
 
@@ -135,6 +136,40 @@ class LambdaFuncDemo:
         print 'list-sum: ', reduce(lambda x, y: sum(x, y), list_in)
 
 
+class VarParaDemo:
+    """
+    1. 可变参数
+    2. 关键字参数
+    """
+
+    def __init__(self):
+        name = 'kevin'
+        age = 28
+        VarParaDemo.args_func(name, age)
+        VarParaDemo.kwargs_func(name=name, age = age)
+
+    @staticmethod
+    def args_func(*args):
+        """
+        可变参数在函数调用时自动组装为一个tuple
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        for arg in args:
+            print arg
+
+    @staticmethod
+    def kwargs_func(**kwargs):
+        """
+        关键字参数在函数内部自动组装为一个dict
+        :param kwargs:
+        :return:
+        """
+        for k, v in kwargs.items():
+            print '%s: %s' % (k, v)
+
+
 if __name__ == '__main__':
     print '--------- 1. embedded function ---------'
     EmbeddedFuncDemo()
@@ -146,3 +181,5 @@ if __name__ == '__main__':
     PartialFuncDemo()
     print '--------- 5. lambda function ---------'
     LambdaFuncDemo()
+    print '--------- 6. variadic parameter demo ---------'
+    VarParaDemo()
