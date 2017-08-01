@@ -1,47 +1,56 @@
-print "------python use 'try-except' to CATCH exception, and use 'raise' to THROW exception-----"
+# encoding=utf-8
+"""
+1. try-except
+2. self-defined exception
+"""
 
-try:
-    try:
-        1 / 0
-    except:
-        print 'here is when exception happens'
-        raise ArithmeticError('calculation error')
-    else:
-        print 'here is when exception not happens'
-    finally:
-        print 'here is when all the block above finished'
-except ArithmeticError, e:
-    print "ArithmeticError: ", e.message
-except Exception, e:
-    print "Exception: ", e.message
 
-print '---------------------------'
-err_arr = [ValueError("value-err"), AttributeError("attr-err"), Exception("exception"), RuntimeError("runtime-err")]
-import logging
-def init_log():
-    # stdout
-    console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(message)s')
-    console.setFormatter(formatter)
-    logging.getLogger().addHandler(console)
+class TryExceptDemo:
+    """
+    python use 'try-except' to CATCH exception, and use 'raise' to THROW exception
+    """
 
-def do_tsk(idx):
-    try:
-        raise err_arr[idx]
-    except Exception, e:
-        raise e
+    def __init__(self):
+        print "try-except demo-----------"
+        TryExceptDemo.demo()
 
-def do_job():
-    init_log()
-    for i in range(0, len(err_arr)):
+    @staticmethod
+    def demo():
         try:
-            do_tsk(i)
+            try:
+                1 / 0
+            except:
+                print 'here is when exception happens'
+                raise ArithmeticError('calculation error')
+            else:
+                print 'here is when exception not happens'
+            finally:
+                print 'here is when all the block above finished'
+        except ArithmeticError, e:
+            print "ArithmeticError: ", e.message
         except Exception, e:
-            err = "tsk %s error: %s" % (i, e.message)
-            logging.info(err)
-            #logging.error(err)
-        info = "tsk %s finish" % i
-        logging.info(info)
+            print "Exception: ", e.message
 
-do_job()
+
+class MyExceptionDemo:
+    """
+    TIP: str(e)==e.message
+    """
+    def __init__(self):
+        print "self-defined exception demo-----------"
+        try:
+            msg = 'test'
+            err = 'my-exception'
+            raise MyExceptionDemo.MyException(msg, err)
+        except Exception, e:
+            print '%s: type=%s, msg=%s, err=%s' % (e, type(e).__name__, e.message, e.errors)
+
+    class MyException(Exception):
+        def __init__(self, message, errors):
+            Exception.__init__(self, message)
+            self.errors = errors
+
+
+if __name__ == "__main__":
+    TryExceptDemo()
+    MyExceptionDemo()
