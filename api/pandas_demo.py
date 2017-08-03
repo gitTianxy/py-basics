@@ -85,7 +85,8 @@ class DataFrameDemo:
         1. get columns
         2. get column by name
         3. get item by col-name and row-idx
-        4. append col
+        4. add cols
+        5. append rows
     TIPS:
         1. DataFrame 对象的每竖列都是一个 Series 对象
     """
