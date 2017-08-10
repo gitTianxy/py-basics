@@ -40,12 +40,21 @@
     * 引用计数
     * 循环引用排查
     * 大对象排查
-# 动态创建类:
+# 动态创建类
     * python是动态语言, 天然支持动态创建类.
     * python中类也是对象, 所以可以通过操作对象/类实例一样操作类:
         1. type: 动态创建类
         2. 动态添加属性(ClsName.new_attr=...即可)
         3. metaclass: 动态改变类的方法
+# 限制实例属性
+    * 通过定义类的__slot__属性,可以限制类的实例属性
+    * 注意: __slots__定义的属性仅对当前类实例起作用，对继承的子类是不起作用的
+# 限制属性修改的简化方式
+    * 两个问题:
+        1. 访问限制--get()
+        2. 修改限制--set()
+    * @property来简化get/set定义
+# 多继承
 """
 
 import gc
@@ -182,6 +191,97 @@ class DynamicClsDemo:
             return type.__new__(cls, name, bases, attrs)
 
 
+class SlotDemo:
+    def __init__(self):
+        def m_append():
+            print 'append method to instance'
+
+        def not_allowed():
+            raise ValueError('this is not allowed')
+
+        ins = SlotDemo.LimitAttrCls()
+        ins.attr = 'limit instance'
+        ins.method = m_append
+        # ins.not_allowed = not_allowed
+
+    class LimitAttrCls(object):
+        __slots__ = ('attr', 'method')
+
+
+class SetDemo:
+    """
+    在不影响属性操作方式(cls.attr)的情况下, 限制属性的set取值范围
+    """
+
+    def __init__(self):
+        student = SetDemo.Student()
+        print 'score', student.score
+        student.score = 10
+        print 'score', student.score
+
+    class Student(object):
+        def __init__(self):
+            self._score = None
+
+        @property
+        def score(self):
+            """
+            通过@property注释, 实现get方法的属性式访问
+            """
+            return self._score
+
+        @score.setter
+        def score(self, value):
+            """
+            通过@score.setter注释, 实现set方法的属性式访问
+            """
+            if not isinstance(value, int):
+                raise ValueError('score must be an integer!')
+            if value < 0 or value > 100:
+                raise ValueError('score must between 0 ~ 100!')
+            self._score = value
+
+
+class MixInDemo:
+    """
+    Python语法允许多继承
+    但是继承还是分了主线和附属类, 后者常用MixIn结尾以示区分
+    """
+
+    def __init__(self):
+        class Bird(MixInDemo.Animal, MixInDemo.Flyable):
+            def __init__(self):
+                MixInDemo.Animal.__init__(self, 'bird')
+                MixInDemo.Flyable.__init__(self, 'fly')
+
+            def display(self):
+                print bird._name
+                print bird._title
+                bird.fly()
+
+        bird = Bird()
+        bird.display()
+
+    class Animal(object):
+        """
+        主线类
+        """
+
+        def __init__(self, name):
+            self._name = name
+
+    class Flyable(object):
+        """
+        附属类
+        """
+
+        def __init__(self, name):
+            self._title = name
+
+        def fly(self):
+            print('Flying...')
+
+
 if __name__ == "__main__":
     print '类基本操作 ------------------'
     # 创建
@@ -220,3 +320,12 @@ if __name__ == "__main__":
 
     print '动态生成类------------------'
     DynamicClsDemo()
+
+    print '限制实例属性(属性+方法) ------------------'
+    SlotDemo()
+
+    print 'get/set simplification ------------------'
+    SetDemo()
+
+    print 'mix inheriatation demo ------------------'
+    MixInDemo()

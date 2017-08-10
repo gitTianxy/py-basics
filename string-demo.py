@@ -1,3 +1,4 @@
+# encoding=utf-8
 sql_tpl = '''
     SELECT mac.fid,mac.ekey,mac.evalue,mac.insert_time,mac.last_update_time,man.ekey,man.evalue FROM fileextend_inner_0 mac LEFT JOIN
     fileextend_inner_0 man ON mac.fid=man.fid
@@ -12,3 +13,6 @@ print ('__' in '__init__')
 print ('__init__'.startswith('__'))
 
 print ('__init__'.endswith('__'))
+
+# join
+print ','.join([str(i) for i in range(0, 5)])
