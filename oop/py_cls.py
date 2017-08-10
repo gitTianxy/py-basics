@@ -40,13 +40,18 @@
     * 引用计数
     * 循环引用排查
     * 大对象排查
+# 动态创建类:
+    * python是动态语言, 天然支持动态创建类.
+    * python中类也是对象, 所以可以通过操作对象/类实例一样操作类:
+        1. type: 动态创建类
+        2. 动态添加属性(ClsName.new_attr=...即可)
+        3. metaclass: 动态改变类的方法
 """
 
 import gc
 
 
 class Employee:
-    'doc'
     # 类变量
     empCount = 0
     publicVar = None
@@ -79,41 +84,10 @@ class Employee:
         pass
 
 
-# 创建
-e = Employee('kevin', '11K')
-# 访问方法
-e.displayCount()
-e.displayEmployee()
-# 访问属性--直接访问+内置函数访问
-e.salary = "14K"
-print 'salary after reset: ', e.salary
-del Employee.empCount
-try:
-    print 'empCount after delete: ', Employee.empCount
-except Exception, e:
-    print 'empCount is deleted', e.args
-
-while True:
-    if hasattr(e, "name"):
-        print "name: ", getattr(e, "name")
-        setattr(e, "name", "xinyu")
-        print "name after reset: ", getattr(e, "name")
-        delattr(e, "name")
-    else:
-        print "name has been deleted"
-        break
-# GC
-gc.enable()
-del e
-gc.collect()
-
-'''
-类继承
-'''
-
-
 class Parant(object):
-    'parent class'
+    """
+    parent class
+    """
     parentAttr = None
     _parentAttr = None
     __parentAttr = None
@@ -135,7 +109,9 @@ class Parant(object):
 
 
 class Child(Parant):
-    'child class'
+    """
+    child class
+    """
     childAttr = None
 
     def __init__(self):
@@ -146,8 +122,101 @@ class Child(Parant):
         print 'call child method'
 
 
-print '------------------'
-c = Child()
-c.parentMethod()
-c._parentMethod()
-c.childMethod()
+class DynamicClsDemo:
+    """
+    动态语言本身支持运行期动态创建类，而静态语言在编译时创建类; 要在静态语言运行期创建类，
+    必须构造源代码字符串再调用编译器，或者借助一些工具生成字节码实现，本质上都是动态编译，会非常复杂。
+    """
+
+    def __init__(self):
+        tpc = self.type_cls()
+        print type(tpc)
+        tp = tpc()
+        tp.method_a()
+        tp.method_b('B')
+
+        MyList = self.meta_cls()
+        ml = MyList()
+        ml.add('a')
+        ml.add('b')
+        print ml
+        ml.delete('a')
+        print ml
+
+    def type_cls(self):
+        """
+        type()用于动态创建'类'
+        TIPS:
+            1. 通过type()函数创建的类和直接写class是完全一样的:
+        因为Python解释器遇到class定义时，仅仅是扫描一下class定义的语法，然后调用type()函数创建出class。
+            2. 注意定义的函数中要至少带一个self参数
+        """
+
+        def cls_method_a(self):
+            print 'class method A'
+
+        def cls_method_b(self, arg):
+            print 'class method %s' % arg
+
+        cls_name = 'TypeCls'
+        parent_cls = (object,)
+        cls_methods = dict(method_a=cls_method_a, method_b=cls_method_b)
+        return type(cls_name, parent_cls, cls_methods)
+
+    def meta_cls(self):
+        """
+        class 定义了 instance 的行为，metaclass 则定义了 class 的行为。可以说，class是metaclass的instance。
+        instance 创建的时候会调用 __init__ 函数，类似的，class 创建的时候会调用 __new__ 函数。因此通过自定义 __new__ 函数，
+        你可以在创建类的时候做些额外的事情：把这个类注册到某个地方作为记录或者后续的查询，给类注入一些属性，或者干脆替换成另外一个类。
+        """
+
+        class MyList(list):
+            __metaclass__ = DynamicClsDemo.MyListMetaCls
+
+        return MyList
+
+    class MyListMetaCls(type):
+        def __new__(cls, name, bases, attrs):
+            attrs['add'] = lambda self, value: self.append(value)
+            attrs['delete'] = lambda self, value: self.remove(value)
+            return type.__new__(cls, name, bases, attrs)
+
+
+if __name__ == "__main__":
+    print '类基本操作 ------------------'
+    # 创建
+    e = Employee('kevin', '11K')
+    # 访问方法
+    e.displayCount()
+    e.displayEmployee()
+    # 访问属性--直接访问+内置函数访问
+    e.salary = "14K"
+    print 'salary after reset: ', e.salary
+    del Employee.empCount
+    try:
+        print 'empCount after delete: ', Employee.empCount
+    except Exception, e:
+        print 'empCount is deleted', e.args
+
+    while True:
+        if hasattr(e, "name"):
+            print "name: ", getattr(e, "name")
+            setattr(e, "name", "xinyu")
+            print "name after reset: ", getattr(e, "name")
+            delattr(e, "name")
+        else:
+            print "name has been deleted"
+            break
+    # GC
+    gc.enable()
+    del e
+    gc.collect()
+
+    print '类继承------------------'
+    c = Child()
+    c.parentMethod()
+    c._parentMethod()
+    c.childMethod()
+
+    print '动态生成类------------------'
+    DynamicClsDemo()
