@@ -5,7 +5,6 @@ coding for scraping html script and retrieving elements from it
 import requests
 import bs4
 
-
 def read_html(url):
     response = requests.get(url)
     return response.content
@@ -26,7 +25,7 @@ def retrieve_dom(html_str, dom_selector):
 
 
 def get_baidulinks(url):
-    print 'www.baidu.com ----------------'
+    print '\nwww.baidu.com ----------------'
     html_str = read_html(url)
     links = []
     for a in retrieve_dom(html_str, 'div#u1 a'):
@@ -35,7 +34,7 @@ def get_baidulinks(url):
 
 
 def get_pyvideos(url):
-    print 'pyvideo/scipy-2017 ----------------'
+    print '\npyvideo/scipy-2017 ----------------'
     html_str = read_html(url)
     article_selector = 'div.container div.content-list article'
     articles = retrieve_dom(html_str, article_selector)
@@ -49,22 +48,31 @@ def get_pyvideos(url):
         videos.append(dict(title=title, img=img.get('src'), author=author, link=link, date=date))
     return videos
 
+
 def youtube_videos():
+    print '\nwww.youtube.com ----------------'
     html = read_html_withproxy('https://www.youtube.com/')
-    print html
-    print '------------------------------------'
     sections = []
     section_selector = 'div#feed-main-what_to_watch ol.item-section'
-    topic_selector = "div.shelf-title-table div.shelf-title-row h2.shelf-title-cell span.branded-page-module-title-text"
-    for topic in retrieve_dom(html, ("%s %s" % (section_selector, topic_selector))):
-        print topic
-    for s in sections:
-        print s
+    for section in retrieve_dom(html, section_selector):
+        section_id = section.get('id')
+        videos = []
+        topic = section.find('span', attrs={'class': 'branded-page-module-title-text'}).get_text()
+        for v in section.find_all('li', attrs={'class': 'yt-shelf-grid-item'}):
+            img = v.find('div', attrs={'class': 'video-thumb'}).find('img').get('src')
+            if not img.startswith('https'):
+                continue
+            title = v.find('h3', attrs={'class': 'yt-lockup-title'}).find('a').get_text()
+            link = v.find('h3', attrs={'class': 'yt-lockup-title'}).find('a').get('href')
+            lookup = v.find('div', attrs={'class': 'yt-lockup-meta'}).find_all('li')
+            look_num = lookup[0].get_text()
+            look_date = lookup[1].get_text()
+            videos.append(dict(img=img, title=title, link=link, look_num=look_num, look_date=look_date))
+        sections.append(dict(id=section_id, topic=topic, videos=videos))
+    return sections
+
 
 if __name__ == "__main__":
-    youtube_videos()
-
-    '''
     links = get_baidulinks('https://www.baidu.com')
     for l in links:
         print l
@@ -72,4 +80,6 @@ if __name__ == "__main__":
     videos = get_pyvideos('http://pyvideo.org/events/scipy-2017.html')
     for v in videos:
         print v
-    '''
+    sections = youtube_videos()
+    for s in sections:
+        print s
