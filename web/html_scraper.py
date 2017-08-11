@@ -12,18 +12,12 @@ def read_html(url):
 
 
 def read_html_withproxy(url):
-    '''
-    proxy = {"http": "http://127.0.0.1:1080", "https": "https://127.0.0.1:1080"}
-    response = requests.get(url, proxies=proxy, verify=False)
-    return response.content
-    '''
     proxies = {
-        "http": "http://10.10.1.10:3128",
-        "https": "http://10.10.1.10:1080",
+        "http": "http://localhost:1080",
+        "https": "http://localhost:1080",
     }
-
-    r = requests.get("http://icanhazip.com", proxies=proxies)
-    print r.text
+    r = requests.get(url, proxies=proxies)
+    return r.content
 
 
 def retrieve_dom(html_str, dom_selector):
@@ -55,9 +49,20 @@ def get_pyvideos(url):
         videos.append(dict(title=title, img=img.get('src'), author=author, link=link, date=date))
     return videos
 
+def youtube_videos():
+    html = read_html_withproxy('https://www.youtube.com/')
+    print html
+    print '------------------------------------'
+    sections = []
+    section_selector = 'div#feed-main-what_to_watch ol.item-section'
+    topic_selector = "div.shelf-title-table div.shelf-title-row h2.shelf-title-cell span.branded-page-module-title-text"
+    for topic in retrieve_dom(html, ("%s %s" % (section_selector, topic_selector))):
+        print topic
+    for s in sections:
+        print s
 
 if __name__ == "__main__":
-    print read_html('https://www.google.com/')
+    youtube_videos()
 
     '''
     links = get_baidulinks('https://www.baidu.com')
