@@ -16,3 +16,11 @@ print ('__init__'.endswith('__'))
 
 # join
 print ','.join([str(i) for i in range(0, 5)])
+
+# format
+import math
+
+# 小数位数控制
+print 'e(3f)={:.3f}, e(6f)={:.6f}'.format(math.e, math.e)
+# 总位数控制
+print '12(3)={:03d}, e(6)={:06.3f}, e(8)={:08.3f}'.format(12, math.e, math.e)
