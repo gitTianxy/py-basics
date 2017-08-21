@@ -32,5 +32,3 @@ local_config = DbConfig(
     maxconnections=10,
     db='pptv_publiccloud'
 )
-
-

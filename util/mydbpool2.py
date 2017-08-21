@@ -1,5 +1,5 @@
 import MySQLdb
-import conf.db_config_local as DBConfig
+import conf.db_config2 as DBConfig
 from DBUtils.PooledDB import PooledDB
 from contextlib import closing
 import threadpool
