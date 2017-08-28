@@ -1,6 +1,6 @@
 # coding=utf-8
-from util.mydbpool2 import MyDbUtils
-import conf.db_config2 as DBConfig
+from util.mydbpool import MyDbUtils
+import conf.db_config as DBConfig
 
 create_tbl_sql = '''
 CREATE TABLE pptv_publiccloud.filecp_244 (

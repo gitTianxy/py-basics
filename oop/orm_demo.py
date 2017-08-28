@@ -4,7 +4,7 @@ ORM全称“Object Relational Mapping”，即对象-关系映射，就是把关
 这样，写代码更简单，不用直接操作SQL语句。
 """
 from contextlib import closing
-from util.mydbpool2 import MyDbUtils
+from util.mydbpool import MyDbUtils
 import conf.db_config_local as DBConfig
 from util.date_utils import DateUtils
 import datetime

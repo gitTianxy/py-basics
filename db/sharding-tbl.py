@@ -4,10 +4,10 @@ from contextlib import closing
 import conf.db_config as DBConfig
 
 conn = MySQLdb.connect(
-    host=DBConfig.LOCAL_HOST,
-    port=DBConfig.LOCAL_PORT,
-    user=DBConfig.LOCAL_USER,
-    passwd=DBConfig.LOCAL_PASSWD,
+    host=DBConfig.local_config.host,
+    port=DBConfig.local_config.port,
+    user=DBConfig.local_config.user,
+    passwd=DBConfig.local_config.passwd,
     db='db_py',
 )
 

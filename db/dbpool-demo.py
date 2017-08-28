@@ -1,36 +1,18 @@
 # coding=utf-8
 
 import conf.db_config as DBConfig
-import MySQLdb
-from DBUtils.PooledDB import PooledDB
 import threadpool
 import threading
 from time import sleep
 import random
+from util.mydbpool import MyDbUtils
 
 
-class MyDbPool:
-    def __init__(self, db):
-        self.pool = PooledDB(MySQLdb, mincached=DBConfig.LOCAL_MINCASHED, maxcached=DBConfig.LOCAL_MAXCASHED,
-                             maxconnections=DBConfig.LOCAL_MAXCONNECTIONS,
-                             host=DBConfig.LOCAL_HOST, user=DBConfig.LOCAL_USER, passwd=DBConfig.LOCAL_PASSWD,
-                             port=DBConfig.LOCAL_PORT, db=db)
-
-    def set_conn(self):
-        # TODO
-        pass
-
-    def set_pool(self, mincached, maxcached, minconnections, maxconnections):
-        # TODO
-        pass
-
-    def get_connect(self):
-        return self.pool.connection()
-
-
-def do_query(db_pool, tbSeq, results):
+def do_query(tbSeq, results):
     try:
-        conn = db_pool.get_connect()
+        db_conf = DBConfig.local_config
+        db_conf.db = 'db_py'
+        conn = MyDbUtils.get_connect(db_conf)
         cur = conn.cursor()
         cur.execute("select * from tbl_%s", (tbSeq,))
         random_dur = random.choice(range(0, 10)) / 10.0
@@ -48,11 +30,10 @@ def do_query(db_pool, tbSeq, results):
 mutex = threading.Lock()
 if __name__ == '__main__':
     results = []
-    db_pool = MyDbPool('db_py')
     th_pool = threadpool.ThreadPool(10)
     paras = []
     for tbSeq in range(0, 10):
-        paras.append((None, {'db_pool': db_pool, 'tbSeq': tbSeq, 'results': results}))
+        paras.append((None, {'tbSeq': tbSeq, 'results': results}))
     requests = threadpool.makeRequests(do_query, paras)
     for req in requests:
         th_pool.putRequest(req)

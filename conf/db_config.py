@@ -1,12 +1,34 @@
 # coding=utf-8
 TYPE_LOCAL = "local"
-TYPE_PCC = "public_cloud"
-TYPE_CC = "channel_center"
+
+class DbConfig:
+    """
+    db config obj
+    """
+    def __init__(self, type, host, port, user, passwd, mincached, maxcached, maxconnections, db):
+        self.type = type
+        self.host = host
+        self.port = port
+        self.user = user
+        self.passwd = passwd
+        self.mincached = mincached
+        self.maxcached = maxcached
+        self.maxconnections = maxconnections
+        self.db = db
+
+    def set_db(self, db):
+        self.db = db
+
+
 # local
-LOCAL_HOST = '127.0.0.1'
-LOCAL_PORT = 3306
-LOCAL_USER = 'kevin'
-LOCAL_PASSWD = '1234'
-LOCAL_MINCASHED = 3
-LOCAL_MAXCASHED = 100
-LOCAL_MAXCONNECTIONS = 10
+local_config = DbConfig(
+    type=TYPE_LOCAL,
+    host="127.0.0.1",
+    user="kevin",
+    passwd="1234",
+    port=3306,
+    mincached=3,
+    maxcached=100,
+    maxconnections=10,
+    db='pptv_publiccloud'
+)

@@ -2,42 +2,63 @@ import MySQLdb
 import conf.db_config as DBConfig
 from DBUtils.PooledDB import PooledDB
 from contextlib import closing
+import threadpool
+import threading
 
 
-class MyDbPool:
-    def __init__(self, type):
-        self.__pools = {}
-        self.type = type
+class MyDbUtils:
+    __pools = {}
 
-    def set_conn(self):
-        # TODO
+    def __init__(self):
         pass
 
-    def set_pool(self, mincached, maxcached, minconnections, maxconnections):
-        # TODO
-        pass
+    @staticmethod
+    def get_connect(db_config):
+        if not isinstance(db_config, DBConfig.DbConfig):
+            raise ValueError("db_config should be instance of '../db_config2.DbConfig'")
 
-    def get_connect(self, db):
-        if self.__pools.get(self.type) is None:
-            if self.type == DBConfig.TYPE_CC:
-                pass
-            elif self.type == DBConfig.TYPE_LOCAL:
-                pool = PooledDB(MySQLdb, mincached=DBConfig.LOCAL_MINCASHED, maxcached=DBConfig.LOCAL_MAXCASHED,
-                                maxconnections=DBConfig.LOCAL_MAXCONNECTIONS,
-                                host=DBConfig.LOCAL_HOST, user=DBConfig.LOCAL_USER, passwd=DBConfig.LOCAL_PASSWD,
-                                port=DBConfig.LOCAL_PORT, db=db)
-                self.__pools[self.type] = pool
-            elif self.type == DBConfig.TYPE_PCC:
-                pass
+        pool_key = "%s:%s" % (db_config.type, db_config.db)
+        if MyDbUtils.__pools.get(pool_key) is None:
+            MyDbUtils.__pools[pool_key] = PooledDB(MySQLdb, mincached=db_config.mincached,
+                                                   maxcached=db_config.maxcached,
+                                                   maxconnections=db_config.maxconnections,
+                                                   host=db_config.host, user=db_config.user,
+                                                   passwd=db_config.passwd,
+                                                   port=db_config.port, db=db_config.db)
 
-        return self.__pools[self.type].connection()
+        return MyDbUtils.__pools[pool_key].connection()
+
 
 '''
 for testing db connection
 '''
-def test_db(sql, type, db):
-    conn = MyDbPool(type).get_connect(db)
+
+mutex = threading.Lock()
+
+
+def query_demo(sql, db_config):
+    global mutex
+    conn = MyDbUtils.get_connect(db_config)
     with closing(conn.cursor()) as cur:
         cur.execute(sql)
+        mutex.acquire()
         print "OK"
+        mutex.release()
 
+
+def job_demo():
+    pool = threadpool.ThreadPool(5)
+    works = []
+    sql = "SELECT * FROM tiny_test"
+    for i in range(0, 10000):
+        work = (None, {'sql': sql, 'db_config': DBConfig.local_config})
+        works.append(work)
+    requests = threadpool.makeRequests(query_demo, works)
+    for req in requests:
+        pool.putRequest(req)
+    pool.wait()
+    print "-------------------\nFINISH"
+
+
+if __name__ == "__main__":
+    job_demo()
