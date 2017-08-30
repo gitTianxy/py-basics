@@ -77,9 +77,9 @@ def del_document(idx, type, id):
     es.delete(index=idx, doc_type=type, id=id)
 
 
-def update_document(idx, type, id, doc=None, params=None):
+def update_document(idx, type, id, doc):
     global es
-    es.update(index=idx, doc_type=type, id=id, body=doc, params=params)
+    es.update(index=idx, doc_type=type, id=id, body={"doc": doc})
 
 
 def search(idx, doc_type, query, sort=[], start=0, size=10):
@@ -111,11 +111,17 @@ if __name__ == '__main__':
         doc = {"name": ('name%s' % id), "age": 10 + id,
                "birthday": DateUtils.str2dt('2000-01-01', DateUtils.DATE_PATTERN_SHORT)}
         save_document(idx=idx, doc_type=doc_type, doc_id=id, doc=doc)
-    # get
+    # get document
     print '-----------------------------'
     docs = get_documents(idx=idx, doc_type=doc_type, ids=[i for i in range(0, 50)])['docs']
     for doc in docs:
         print doc
+    # update document
+    doc_new = {"name": 'name0_NEW', "age": 10,
+               "birthday": DateUtils.str2dt('2017-01-01', DateUtils.DATE_PATTERN_SHORT)}
+    update_document(idx=idx, type=doc_type, id=0, doc=doc_new)
+    # del document
+    del_document(idx=idx, type=doc_type, id=1)
     # search -- there is a time-delay before search launch
     print '-----------------------------'
     sleep(5)
@@ -137,4 +143,4 @@ if __name__ == '__main__':
             "should": []
         }
     }
-    pprint.pprint(search(idx=idx, doc_type=doc_type, query=es_query))
+    pprint.pprint(search(idx=idx, doc_type=doc_type, query=es_query, size=50))
