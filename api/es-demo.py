@@ -11,6 +11,7 @@ ISSUES:
 from util.date_utils import DateUtils
 from elasticsearch import Elasticsearch
 from time import sleep
+import pprint
 
 
 def init_es(hosts, timeout=10):
@@ -66,9 +67,33 @@ def get_document(idx, doc_type, doc_id):
     return es.get(index=idx, doc_type=doc_type, id=doc_id)
 
 
+def get_documents(idx, doc_type, ids):
+    global es
+    return es.mget(body={'ids': ids}, index=idx, doc_type=doc_type)
+
+
+def del_document(idx, type, id):
+    global es
+    es.delete(index=idx, doc_type=type, id=id)
+
+
+def update_document(idx, type, id, doc=None, params=None):
+    global es
+    es.update(index=idx, doc_type=type, id=id, body=doc, params=params)
+
+
 def search(idx, doc_type, query, sort=[], start=0, size=10):
     global es
-    return es.search(index=idx, doc_type=doc_type, body={'query': query, 'sort': sort, 'from': start, 'size': size})
+    res = {}
+    res['start'] = start
+    res['page_size'] = size
+
+    res['hits'] = \
+        es.search(index=idx, doc_type=doc_type, body={'query': query, 'sort': sort, 'from': start, 'size': size})[
+            'hits'][
+            'hits']
+    res['count'] = len(res['hits'])
+    return res
 
 
 es = None
@@ -81,14 +106,35 @@ if __name__ == '__main__':
     # create index
     create_idx(idx=idx, settings=None, mappings=None)
     # save document
-    doc = {"name": "kevin", "age": 18,
-           "birthday": DateUtils.str2dt('2000-01-01', DateUtils.DATE_PATTERN_SHORT)}
-    save_document(idx=idx, doc_type='test-type', doc_id=01, doc=doc)
+    doc_type = 'people'
+    for id in range(0, 50):
+        doc = {"name": ('name%s' % id), "age": 10 + id,
+               "birthday": DateUtils.str2dt('2000-01-01', DateUtils.DATE_PATTERN_SHORT)}
+        save_document(idx=idx, doc_type=doc_type, doc_id=id, doc=doc)
     # get
-    print get_document(idx=idx, doc_type="test-type", doc_id=01)
+    print '-----------------------------'
+    docs = get_documents(idx=idx, doc_type=doc_type, ids=[i for i in range(0, 50)])['docs']
+    for doc in docs:
+        print doc
     # search -- there is a time-delay before search launch
-    sleep(30)
-    es_query = {"filtered": {
-        "query": {"matchAll": {}},
-    }}
-    print search(idx=idx, doc_type="test-type", query=es_query)
+    print '-----------------------------'
+    sleep(5)
+    es_query = {
+        "bool": {
+            "must": [
+                {
+                    "terms": {
+                        "_id": [str(i) for i in range(0, 20)]
+                    }
+                },
+                {
+                    "range": {
+                        "age": {"lte": "20"}
+                    }
+                }
+            ],
+            "must_not": [],
+            "should": []
+        }
+    }
+    pprint.pprint(search(idx=idx, doc_type=doc_type, query=es_query))
