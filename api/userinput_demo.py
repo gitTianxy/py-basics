@@ -90,7 +90,7 @@ class KeyFilter:
 
 
 if __name__ == "__main__":
-    # click_to_keepscreenalive()
+    click_to_keepscreenalive()
     # type_and_del('Hello, World!', 5)
     # ClickFibo().run()
-    KeyFilter(['A', 'B', 'C'])
+    # KeyFilter(['A', 'B', 'C'])
