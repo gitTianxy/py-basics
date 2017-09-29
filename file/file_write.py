@@ -2,6 +2,7 @@
 import xlwt
 from xlutils.copy import copy
 from xlrd import open_workbook
+import os.path
 
 line = None
 lines = []
@@ -39,13 +40,17 @@ def append_excel(path):
     :param path:
     :return:
     """
+    if not os.path.isfile(path):
+        wb = xlwt.Workbook(encoding='utf-8')
+        wb.add_sheet('my sheet')
+        wb.save(path)
     # open file
-    book_ro = open_workbook(path)
-    sheet = book_ro.sheet_by_index(0)
+    wb = open_workbook(path)
+    sheet = wb.sheet_by_index(0)
     nrows = sheet.nrows
     ncols = sheet.ncols
     # creates a writeable copy
-    book = copy(book_ro)
+    book = copy(wb)
     sheet1 = book.get_sheet(0)
     # append column
     for colx in range(ncols, ncols+2):
