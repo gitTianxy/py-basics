@@ -9,6 +9,7 @@ from pymouse import PyMouse
 from pymouse import PyMouseEvent
 from pykeyboard import PyKeyboard
 import pythoncom
+import win32gui
 
 m = PyMouse()
 k = PyKeyboard()
@@ -16,14 +17,15 @@ k = PyKeyboard()
 
 def click_to_keepscreenalive():
     global m
-    m_position = m.position()
-    m_x = m_position[0]
-    m_y = m_position[1]
+    m_x, m_y = m.position()
     # x_dim, y_dim = m.screen_size()
+    # flags, hcursor, (x, y) = win32gui.GetCursorInfo()
     while True:
-        # m.click(x_dim / 2, y_dim / 2, 1)
-        m.click(m_x, m_y, 1)
         time.sleep(10)
+        # m.click(x_dim / 2, y_dim / 2, 1)
+        # m.click(x, y)
+        print 'click (%s, %s)' % (m_x, m_y)
+        m.click(m_x, m_y, 1)
 
 
 def type_and_del(content, sleep_time):
