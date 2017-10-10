@@ -16,9 +16,13 @@ k = PyKeyboard()
 
 def click_to_keepscreenalive():
     global m
-    x_dim, y_dim = m.screen_size()
+    m_position = m.position()
+    m_x = m_position[0]
+    m_y = m_position[1]
+    # x_dim, y_dim = m.screen_size()
     while True:
-        m.click(x_dim / 2, y_dim / 2, 1)
+        # m.click(x_dim / 2, y_dim / 2, 1)
+        m.click(m_x, m_y, 1)
         time.sleep(10)
 
 
