@@ -16,15 +16,19 @@ k = PyKeyboard()
 
 
 def click_to_keepscreenalive():
+    """
+    others:
+        1. get screen size:  x_dim, y_dim = m.screen_size()
+        2. get cursor info: flags, hcursor, (x, y) = win32gui.GetCursorInfo()
+    :return:
+    """
     global m
-    m_x, m_y = m.position()
-    # x_dim, y_dim = m.screen_size()
-    # flags, hcursor, (x, y) = win32gui.GetCursorInfo()
     while True:
-        time.sleep(10)
+        time.sleep(60)
+        m_x, m_y = m.position()
+        print 'click (%s, %s)' % (m_x, m_y)
         # m.click(x_dim / 2, y_dim / 2, 1)
         # m.click(x, y)
-        print 'click (%s, %s)' % (m_x, m_y)
         m.click(m_x, m_y, 1)
 
 
