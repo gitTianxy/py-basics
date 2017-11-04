@@ -5,21 +5,18 @@ from xlrd import open_workbook
 import os.path
 
 
-def write(path):
-    global lines
-    global line
+def crt_file(path, lines):
     with open(path, "w") as f:
         f.write(line)
         f.writelines(lines)
-    f.close()
 
 
-def append(path, lines):
-    pass
+def append_file(path, lines):
+    with open(path, "a") as f:
+        f.writelines(lines)
 
 
-def create_excel(path):
-    global lines
+def crt_excel(path, lines):
     workbook = xlwt.Workbook(encoding='utf-8') # ascii
     worksheet = workbook.add_sheet('My Worksheet')
     for idx in range(0, len(lines)):
@@ -61,12 +58,12 @@ lines = []
 if __name__ == "__main__":
     # init content
     root = "../result"
-    line = "hello, this is a write-line"
+    line = "hello, this is a write-line\n"
     for i in range(0, 10):
-        lines.append("\nthis is line %s" % i)
-    append_lines = ['new' + l for l in lines]
+        lines.append("this is line %s\n" % i)
+    append_lines = [l.replace("\n", "") + " new\n" for l in lines]
 
-    write(root + '/file.txt')
-    append(root + '/file_append.txt', append_lines)
-    create_excel(root + '/excel.xls')
-    append_excel(root + '/excel_append.xls')
+    crt_file(root + '/file.txt', lines)
+    append_file(root + '/file.txt', append_lines)
+    crt_excel(root + '/excel.xls', lines)
+    append_excel(root + '/excel.xls')
