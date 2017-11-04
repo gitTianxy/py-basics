@@ -55,6 +55,7 @@ print '%s: %s' % (tuple1[0], unicode(tuple1[1], encoding='utf8'))
 print '%s: %s' % (tuple1[0], tuple1[1].decode('utf8'))
 
 import sys
+
 print sys.getdefaultencoding()
 s = '中文'
 s.decode('utf8').encode('gb18030')
@@ -62,3 +63,13 @@ s.decode('utf8').encode('gb18030')
 如下代码将报错
 s.encode('gb18030')
 '''
+
+"""
+关于编码:
+# unicode是给各种不同的符号划分了编码序号范围,比如: 数字0-9占了[30,39]; 英文字符占了[41-7a],中文占了[4E00-9FCB].
+# 而utf-8是基于unicode的一种存储方案, 它是一种变长存储方案: 比如数字/英文通常用一个字节存储, 而中文通常用3个字节存储; 
+可想而知, 在unicode序列中越靠后的字符存储所需的字长越长。
+"""
+print len(bytearray("1234"))
+print len(bytearray("hello"))
+print len(bytearray("你好"))

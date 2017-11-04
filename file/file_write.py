@@ -4,25 +4,18 @@ from xlutils.copy import copy
 from xlrd import open_workbook
 import os.path
 
-line = None
-lines = []
 
-
-def init_content():
-    global lines
-    global line
-    line = "hello, this is a write-line"
-    for i in range(0, 10):
-        lines.append("\nthis is line %s" % i)
-
-
-def write_txt(path):
+def write(path):
     global lines
     global line
     with open(path, "w") as f:
         f.write(line)
         f.writelines(lines)
     f.close()
+
+
+def append(path, lines):
+    pass
 
 
 def create_excel(path):
@@ -63,8 +56,17 @@ def append_excel(path):
     book.save(path)
 
 
+line = None
+lines = []
 if __name__ == "__main__":
-    init_content()
-    write_txt('..result/file_txt.txt')
-    create_excel('..result/file_excel.xls')
-    append_excel('../result/file_excel.xls')
+    # init content
+    root = "../result"
+    line = "hello, this is a write-line"
+    for i in range(0, 10):
+        lines.append("\nthis is line %s" % i)
+    append_lines = ['new' + l for l in lines]
+
+    write(root + '/file.txt')
+    append(root + '/file_append.txt', append_lines)
+    create_excel(root + '/excel.xls')
+    append_excel(root + '/excel_append.xls')
