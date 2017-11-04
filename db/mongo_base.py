@@ -44,8 +44,8 @@ class MaoBase:
     """
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, db, collect_name):
-        self.db = db
+    def __init__(self, db_name, collect_name):
+        self.db = db_name
         self.collect = collect_name
 
     def save(self, entity):

@@ -26,6 +26,11 @@ print 'e(3f)={:.3f}, e(6f)={:.6f}'.format(math.e, math.e)
 # 总位数控制
 print '12(3)={:03d}, e(6)={:06.3f}, e(8)={:08.3f}'.format(12, math.e, math.e)
 
+# contain substring
+print "'abc' in 'abc def':", 'abc' in 'abc def'
+# substring--string is an array of char
+print 'abc def'[:3]
+
 # 编码问题(python 2.x存在的问题, python 3.x已统一)
 '''
 字符串在Python内部的表示是unicode编码, 因此，在做编码转换时，通常需要以unicode作为中间编码:
