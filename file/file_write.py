@@ -4,29 +4,19 @@ from xlutils.copy import copy
 from xlrd import open_workbook
 import os.path
 
-line = None
-lines = []
 
-
-def init_content():
-    global lines
-    global line
-    line = "hello, this is a write-line"
-    for i in range(0, 10):
-        lines.append("\nthis is line %s" % i)
-
-
-def write_txt(path):
-    global lines
-    global line
+def crt_file(path, lines):
     with open(path, "w") as f:
         f.write(line)
         f.writelines(lines)
-    f.close()
 
 
-def create_excel(path):
-    global lines
+def append_file(path, lines):
+    with open(path, "a") as f:
+        f.writelines(lines)
+
+
+def crt_excel(path, lines):
     workbook = xlwt.Workbook(encoding='utf-8') # ascii
     worksheet = workbook.add_sheet('My Worksheet')
     for idx in range(0, len(lines)):
@@ -63,8 +53,17 @@ def append_excel(path):
     book.save(path)
 
 
+line = None
+lines = []
 if __name__ == "__main__":
-    init_content()
-    write_txt('..result/file_txt.txt')
-    create_excel('..result/file_excel.xls')
-    append_excel('../result/file_excel.xls')
+    # init content
+    root = "../result"
+    line = "hello, this is a write-line\n"
+    for i in range(0, 10):
+        lines.append("this is line %s\n" % i)
+    append_lines = [l.replace("\n", "") + " new\n" for l in lines]
+
+    crt_file(root + '/file.txt', lines)
+    append_file(root + '/file.txt', append_lines)
+    crt_excel(root + '/excel.xls', lines)
+    append_excel(root + '/excel.xls')

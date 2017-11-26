@@ -112,7 +112,7 @@ class ClosingDemo:
     @staticmethod
     def perform():
         """
-        close的作用:
+        closing方法的作用:
             1. 将一个包含close方法的对像自动包装__enter__和__exit__
             2. 在__exit__内部执行对象的close方法
         :return:
