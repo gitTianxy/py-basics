@@ -8,6 +8,9 @@ TIPs:
 """
 import json
 import xlrd
+from os import walk
+from os.path import isfile, join
+from os import listdir
 
 
 def load_json(path):
@@ -69,6 +72,20 @@ def read_line_by_line(path):
             # print l,
 
 
+def list_files(folder):
+    return [join(folder, f) for f in listdir(folder) if isfile(join(folder, f))]
+
+
+def list_files_recursively(root):
+    files = []
+    for (dirpath, dirnames, filenames) in walk(root):
+        for fn in filenames:
+            f = join(dirpath, fn)
+            if isfile(f):
+                files.append(f)
+    return files
+
+
 if __name__ == '__main__':
     root = "../data/"
     # load json
@@ -88,3 +105,11 @@ if __name__ == '__main__':
     print '--------- read by chunk ---------'
     for chk in read_chunks(root + "pgc-cid.txt"):
         print chk
+    # list file (recursively)
+    print '--------- list files in a folder ---------'
+    fs = list_files("path_to_folder")
+    for i in range(0, len(fs)):
+        print "%s: %s" % (i, fs[i])
+    fs = list_files_recursively("path_to_folder")
+    for i in range(0, len(fs)):
+        print "%s: %s" % (i, fs[i])
