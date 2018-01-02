@@ -21,13 +21,17 @@ class TryExceptDemo:
                 1 / 0
             except:
                 print 'here is when exception happens'
-                raise ArithmeticError('calculation error')
+                raise ArithmeticError('calculation error. top:%s, bottom:%s' % (1, 0))
             else:
                 print 'here is when exception not happens'
             finally:
                 print 'here is when all the block above finished'
         except ArithmeticError, e:
             print "ArithmeticError: ", e.message
+            try:
+                raise RuntimeError('*err happens in except.')
+            except Exception, ex:
+                print ex
         except Exception, e:
             print "Exception: ", e.message
 

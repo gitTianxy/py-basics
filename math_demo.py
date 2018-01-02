@@ -51,3 +51,5 @@ print 'generate a num list: ', range(0, 10, 2)
 print 'generate a num list generator--for iteration: '
 for num in xrange(0, 10, 2):
     print num
+
+print '2/3=%s, float(2)/float(3)=%s, 2//3=%s' % (2/3, float(2)/float(3), 2//3)
