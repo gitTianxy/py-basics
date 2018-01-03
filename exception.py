@@ -50,6 +50,11 @@ class MyExceptionDemo:
             print '%s: type=%s, msg=%s, err=%s' % (e, type(e).__name__, e.message, e.errors)
 
     class MyException(Exception):
+        """
+        NOTE:
+            自定义异常需继承自Exception
+            可以自定义'__str__'方法, 默认为返回message值
+        """
         def __init__(self, message, errors):
             Exception.__init__(self, message)
             self.errors = errors

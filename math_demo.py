@@ -53,3 +53,13 @@ for num in xrange(0, 10, 2):
     print num
 
 print '2/3=%s, float(2)/float(3)=%s, 2//3=%s' % (2/3, float(2)/float(3), 2//3)
+
+
+# random.randomrange example
+c = 0
+while c < 100:
+    # get value from [0, 5, 10, 15, ..., 95]
+    print random.randrange(0, 100, 5)
+    c += 1
+
+print '0.1*55=', 0.1*55
