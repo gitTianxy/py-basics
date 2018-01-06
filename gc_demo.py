@@ -17,6 +17,8 @@ python内存管理机制及GC API
     用'gc.set_threshold(t_0, t_1, t_2)'设置.
     -
 
+* NOTE
+    - 将引用作为函数参数传入, 函数内对引用的操作(而非引用对象的操作)对函数外不可见--为临时引用; 见下面的例子'var_gc'.
 """
 import gc
 from sys import getrefcount
@@ -53,7 +55,82 @@ def gc_demo(g=None):
         gc.collect()
 
 
+def var_gc():
+    """
+    传入函数的引用
+    :return:
+    """
+    str_var = 'str'
+    list_var = range(0, 10)
+    dict_var = dict(k1='v1')
+    print "ref count of 'str_var':", getrefcount(str_var)
+    print "ref count of 'list_var':", getrefcount(list_var)
+    print "ref count of 'dict_var':", getrefcount(dict_var)
+    time.sleep(1)
+    ref_str = str_var
+    ref_list = list_var
+    ref_dict = dict_var
+    print "ref count of 'str_var(after 'ref_str = str_var')':", getrefcount(str_var)
+    print "ref count of 'str_var(after 'ref_list = list_var')':", getrefcount(list_var)
+    print "ref count of 'str_var(after 'ref_dict = dict_var')':", getrefcount(dict_var)
+    time.sleep(1)
+    del ref_str
+    del ref_list
+    del ref_dict
+    print "ref count of 'str_var(after 'del ref_str')':", getrefcount(str_var)
+    print "ref count of 'str_var(after 'del ref_list')':", getrefcount(list_var)
+    print "ref count of 'str_var(after 'del ref_dict')':", getrefcount(dict_var)
+    time.sleep(1)
+    ref_func(str_var, list_var, dict_var)
+    print "ref count of 'str_var'(after 'ref_func(str_var, list_var, dict_var)'):", getrefcount(str_var)
+    print "ref count of 'list_var'(after 'ref_func(str_var, list_var, dict_var)'):", getrefcount(list_var)
+    print "ref count of 'dict_var'(after 'ref_func(str_var, list_var, dict_var)'):", getrefcount(dict_var)
+
+
+def ref_func(str_ref, list_ref, dict_ref):
+    '''
+    string reference
+    '''
+    # ref
+    print '---str_ref value:', str_ref
+    # new ref: 零时性引用,对函数外统计引用数不可见/无影响
+    str_ref2 = str_ref
+    print "---str_ref2:", str_ref2
+    # revision
+    str_ref = 'new str'
+    print "---revision of str_ref(new):", str_ref
+    '''
+    list reference
+    '''
+    # ref
+    print '***list:', list_ref
+    # new ref: 零时性引用,对函数外统计引用数不可见/无影响
+    list_ele2 = list_ref[0]
+    print '***list[0]:', list_ele2
+    list_ref2 = list_ref
+    print '***list_ref2:', list_ref2
+    # revision
+    list_ref = range(10, 20)
+    print '***list(new):', list_ref
+    '''
+    dict ref
+    '''
+    # ref
+    print "---dict:", dict_ref
+    # new ref: 零时性引用,对函数外统计引用数不可见/无影响
+    dict_ref2 = dict_ref
+    print "---dict_ref2:", dict_ref2
+    dict_k1 = dict_ref['k1']
+    print "---dict_ref['k1']:", dict_k1
+    # revision
+    dict_ref = dict(k2='v2')
+    print "---dict(new):", dict_ref
+
+
 if __name__ == '__main__':
+    """
     refcount_demo()
     gc_threshold_demo()
     gc_demo()
+    """
+    var_gc()

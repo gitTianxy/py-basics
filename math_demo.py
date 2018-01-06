@@ -11,6 +11,8 @@ print 'floor of 1.05: %s' % math.floor(1.05)
 print 'round(1.05)=%s, round(1.05, 1)=%s, round(1.05, 3)=%s' % (round(1.05), round(1.05, 1), round(1.05, 3))
 
 print 'exp(1): ', math.exp(1)
+for i in range(1, 10):
+    print 'ln(%s): %s, 2^ln(%s): %s, 2.5^ln(%s): %s, 3^ln(%s): %s' % (i, math.log(i), i, math.pow(2, math.log(i)), i, math.pow(2.5, math.log(i)), i, math.pow(3, math.log(i)))
 print 'ln(e): ', math.log(math.e)
 print 'log10(100): ', math.log(100, 10)
 
