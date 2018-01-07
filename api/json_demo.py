@@ -107,6 +107,7 @@ class MyEncoder(json.JSONEncoder):
 
 
 if __name__ == "__main__":
+    """
     inner_dic = {
         "inner_f1": "inner_f1",
         "inner_f2": "inner_f2"
@@ -119,3 +120,5 @@ if __name__ == "__main__":
     pprint.pprint(MEntity(dic).to_dic())
     # pprint.pprint(json.dumps(obj=MEntity(dic), default=json_default))
     # pprint.pprint(json.dumps(MEntity(dic), cls=MyEncoder))
+    """
+

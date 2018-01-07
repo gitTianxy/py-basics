@@ -1,8 +1,12 @@
 # encoding=utf-8
 """
-user input(mouse click, key down) demo
+user input demo
 --------------------------
+1. mouse click
+2. key down
+3. accept content
 """
+
 import time
 from pyHook import HookManager
 from pymouse import PyMouse
@@ -99,8 +103,14 @@ class KeyFilter:
         return res
 
 
+def accept_content():
+    input = raw_input('please input:')
+    print 'user input:', input
+
+
 if __name__ == "__main__":
     click_to_keepscreenalive()
     # type_and_del('Hello, World!', 5)
     # ClickFibo().run()
     # KeyFilter(['A', 'B', 'C'])
+    # accept_content()

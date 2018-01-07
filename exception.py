@@ -3,7 +3,13 @@
 1. try-except
 2. self-defined exception
 """
+from multiprocessing.pool import ThreadPool
+import random
+import threading
+import time
 
+
+mutex = threading.Lock()
 
 class TryExceptDemo:
     """
@@ -21,13 +27,17 @@ class TryExceptDemo:
                 1 / 0
             except:
                 print 'here is when exception happens'
-                raise ArithmeticError('calculation error')
+                raise ArithmeticError('calculation error. top:%s, bottom:%s' % (1, 0))
             else:
                 print 'here is when exception not happens'
             finally:
                 print 'here is when all the block above finished'
         except ArithmeticError, e:
             print "ArithmeticError: ", e.message
+            try:
+                raise RuntimeError('*err happens in except.')
+            except Exception, ex:
+                print ex
         except Exception, e:
             print "Exception: ", e.message
 
@@ -46,11 +56,84 @@ class MyExceptionDemo:
             print '%s: type=%s, msg=%s, err=%s' % (e, type(e).__name__, e.message, e.errors)
 
     class MyException(Exception):
+        """
+        NOTE:
+            自定义异常需继承自Exception
+            可以自定义'__str__'方法, 默认为返回message值
+        """
         def __init__(self, message, errors):
             Exception.__init__(self, message)
             self.errors = errors
 
 
+class ThreadExceptDemo:
+    def __init__(self):
+        print '------------- thread exception demo --------------'
+        # try:
+        #     self.run_thr()
+        # except Exception, ex:
+        #     print ex
+        try:
+            pl = ThreadPool(10)
+            self.method_share_pool_a(pl)
+            self.method_share_pool_b(pl)
+        except Exception, ex:
+            print ex
+        finally:
+            pl.close()
+            pl.join()
+
+
+    def run_thr(self):
+        try:
+            pl = ThreadPool(20)
+            print 'before run thread'
+            pl.map(ThreadExceptDemo.print_idx, range(0, 100))
+        except:
+            raise
+        finally:
+            pl.close()
+            pl.join()
+            print 'after run thread'
+
+    @staticmethod
+    def print_idx(i):
+        display(i)
+        time.sleep(1)
+        # if random.random() > 0.2:
+        #     display(i)
+        #     time.sleep(1)
+        # else:
+        #     raise RuntimeError('print idx err. TEST')
+
+    def method_share_pool_a(self, pl):
+        display('exec method A share threadpool')
+        try:
+            pl.map(ThreadExceptDemo.print_idx, range(1000, 1500))
+            raise RuntimeError('error occur in method A')
+        except:
+            pl.close()
+            pl.join()
+            raise
+
+    def method_share_pool_b(self, pl):
+        display('exec method B share threadpool')
+        try:
+            pl.map(ThreadExceptDemo.print_idx, range(0, 1000))
+            raise RuntimeError('error occur in method A')
+        except:
+            pl.close()
+            pl.join()
+            raise
+
+
+def display(content):
+    mutex.acquire()
+    print content
+    mutex.release()
+
+
 if __name__ == "__main__":
     TryExceptDemo()
     MyExceptionDemo()
+    ThreadExceptDemo()

@@ -11,6 +11,8 @@ print 'floor of 1.05: %s' % math.floor(1.05)
 print 'round(1.05)=%s, round(1.05, 1)=%s, round(1.05, 3)=%s' % (round(1.05), round(1.05, 1), round(1.05, 3))
 
 print 'exp(1): ', math.exp(1)
+for i in range(1, 10):
+    print 'ln(%s): %s, 2^ln(%s): %s, 2.5^ln(%s): %s, 3^ln(%s): %s' % (i, math.log(i), i, math.pow(2, math.log(i)), i, math.pow(2.5, math.log(i)), i, math.pow(3, math.log(i)))
 print 'ln(e): ', math.log(math.e)
 print 'log10(100): ', math.log(100, 10)
 
@@ -51,3 +53,15 @@ print 'generate a num list: ', range(0, 10, 2)
 print 'generate a num list generator--for iteration: '
 for num in xrange(0, 10, 2):
     print num
+
+print '2/3=%s, float(2)/float(3)=%s, 2//3=%s' % (2/3, float(2)/float(3), 2//3)
+
+
+# random.randomrange example
+c = 0
+while c < 100:
+    # get value from [0, 5, 10, 15, ..., 95]
+    print random.randrange(0, 100, 5)
+    c += 1
+
+print '0.1*55=', 0.1*55
