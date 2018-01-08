@@ -4,7 +4,14 @@ ppc_con = None
 cursor = None
 date_begin = '2017-06-02'
 
-sql_tmpl = "SELECT fid, evalue FROM fileextend_inner_%s WHERE last_update_time>%s AND ekey='av_scan_result'"
+sql_tmpl = '''
+SELECT fid, evalue
+FROM fileextend_inner_%s
+WHERE last_update_time>%s
+AND ekey='av_scan_result'
+AND fid IN(fids)
+'''
+
 
 def initDB():
     global ppc_con
@@ -24,15 +31,23 @@ try:
     print 'connection success'
     cursor = ppc_con.cursor()
     i = 1
-    cursor.execute(sql_tmpl, (i, date_begin))
+    fids = [5542145, 5542657, 5542401, 5543169]
+    plcholder = ', '.join('%s' for unused in fids)
+    pst = sql_tmpl.replace('fids', plcholder)
+    params = []
+    params.append(i)
+    params.append(date_begin)
+    params.extend(fids)
+    cursor.execute(pst, params)
     for fid, evalue in cursor:
-        print 'file_id=%s, evalue=%s' % (fid, evalue)
+        print 'fid=%s, evalue=%s' % (fid, evalue)
 
     print '-----------------------------'
-    cursor.execute(sql_tmpl, (i, date_begin))
+    # cursor.execute(sql_tmpl, (i, date_begin))
+    cursor.execute(pst, params)
     results = cursor.fetchall()
     for item in results:
-        print 'file_id=%s, evalue=%s' % (item[0], item[1])
+        print 'fid=%s, evalue=%s' % (item[0], item[1])
 
 except mysql.connector.Error as e:
     print('connect fails!{}'.format(e))
