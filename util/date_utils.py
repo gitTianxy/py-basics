@@ -20,7 +20,7 @@ class DateUtils:
         pass
 
     @staticmethod
-    def str2dt(date_str, pattern):
+    def str2dt(date_str, pattern=DATE_PATTERN_LONG):
         """
         transform 'date_str' of certain 'pattern' to date_time
         :param date_str:

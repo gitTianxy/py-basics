@@ -9,6 +9,8 @@ import pprint  # pretty print
 from util.mongo_connector import local_conn
 from mongo_base import MEntityBase
 from mongo_base import MaoBase
+from bson import ObjectId
+from util.date_utils import DateUtils
 
 
 def get_db():
@@ -87,6 +89,26 @@ if __name__ == "__main__":
     # count all
     print mao.count_all()
     """
-    # query with conditions
+    '''
+    query with conditions
+    '''
+    # query with key=val groups
+    print "--------- query with 'key'='val' conditions ---------"
     for obj in mao.query(f1='f1'):
+        pprint.pprint(obj.to_dic())
+    # query with or condition
+    or_cond = {'$or': [{'f1': 'f1'}, {'f1': 'f2'}]}
+    print '--------- query with OR condition %s ---------' % or_cond
+    for obj in mao.query(**or_cond):
+        pprint.pprint(obj.to_dic())
+    # query with and condition
+    and_cond = {'$and': [{'f1': 'f1'}, {'update_time': {'$gte': DateUtils.str2dt('2017-07-26 09:40:00'), '$lt': DateUtils.str2dt('2017-07-26 09:50:00')}}]}
+    print '--------- query with AND condition %s ---------' % and_cond
+    for obj in mao.query(**and_cond):
+        pprint.pprint(obj.to_dic())
+    # query with in condition
+    # in_cond = {'_id': {'$in': [ObjectId('597863df9a52c13c8053eeb8'), ObjectId('5978661d9a52c1271ccf71b6')]}}
+    in_cond = {'f1': {'$in': ['f1', 'f2']}}
+    print '--------- query with IN condition %s ---------' % in_cond
+    for obj in mao.query(**in_cond):
         pprint.pprint(obj.to_dic())
