@@ -234,6 +234,17 @@ class GeneratorDemo:
             idx += 1
 
 
+class RemoveDemo:
+    def __init__(self):
+        print '------------- REMOVE demo ---------------'
+        l1 = range(0, 10)
+        print "l1 before remove:", l1
+        for i in l1:
+            if i % 2 == 0:
+                l1.remove(i)
+        print "l1 after remove:", l1
+
+
 if __name__ == "__main__":
     # prepare data
     num_list = []
@@ -250,3 +261,7 @@ if __name__ == "__main__":
     ListGenerator()
     IterateDemo(num_list)
     GeneratorDemo()
+    RemoveDemo()
+    # range demo
+    for i in range(256, 0, -1):
+        print i

@@ -7,7 +7,7 @@ from multiprocessing.pool import ThreadPool
 import random
 import threading
 import time
-
+import traceback
 
 mutex = threading.Lock()
 
@@ -109,7 +109,7 @@ class ThreadExceptDemo:
     def method_share_pool_a(self, pl):
         display('exec method A share threadpool')
         try:
-            pl.map(ThreadExceptDemo.print_idx, range(1000, 1500))
+            pl.map(ThreadExceptDemo.print_idx, range(100, 150))
             raise RuntimeError('error occur in method A')
         except:
             pl.close()
@@ -119,7 +119,7 @@ class ThreadExceptDemo:
     def method_share_pool_b(self, pl):
         display('exec method B share threadpool')
         try:
-            pl.map(ThreadExceptDemo.print_idx, range(0, 1000))
+            pl.map(ThreadExceptDemo.print_idx, range(0, 100))
             raise RuntimeError('error occur in method A')
         except:
             pl.close()
@@ -128,12 +128,25 @@ class ThreadExceptDemo:
 
 
 def display(content):
+    global mutex
+
     mutex.acquire()
     print content
     mutex.release()
+
+
+def print_ex_stack():
+    display('====print exception stack demo====')
+    try:
+        raise RuntimeError('runtime err. TEST')
+    except:
+        display(traceback.format_exc())
+    finally:
+        display('after print stack')
 
 
 if __name__ == "__main__":
     TryExceptDemo()
     MyExceptionDemo()
     ThreadExceptDemo()
+    print_ex_stack()

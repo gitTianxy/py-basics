@@ -120,6 +120,15 @@ class MaoBase:
             "$set": dic_4_update
         })
 
+    def query(self, skp=0, lmt=5, **kwargs):
+        """
+        :param skp: skip
+        :param lmt: limit
+        :param kwargs: other query conditions
+        :return:
+        """
+        return [self._convert_2_entity(e) for e in self.db[self.collect].find(kwargs).skip(skp).limit(lmt)]
+
     @abc.abstractmethod
     def _convert_2_entity(self, db_dict):
         pass

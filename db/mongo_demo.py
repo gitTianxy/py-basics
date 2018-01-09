@@ -68,6 +68,7 @@ class MEntityMao(MaoBase):
 
 if __name__ == "__main__":
     mao = MEntityMao()
+    """
     # create
     inner_dic = dict(f1="inner_f1", f2="inner_f2")
     entity_dic = dict(f1="f1", f2="f2", innerEntity=inner_dic)
@@ -85,3 +86,7 @@ if __name__ == "__main__":
         e.display()
     # count all
     print mao.count_all()
+    """
+    # query with conditions
+    for obj in mao.query(f1='f1'):
+        pprint.pprint(obj.to_dic())
