@@ -145,8 +145,29 @@ def print_ex_stack():
         display('after print stack')
 
 
+def finally_in_loop():
+    """
+    code block in FINALLY is executed before the 'continue' & 'return' & 'break' in EXCEPT & TRY
+    :return:
+    """
+    print "===demo: finally in loop==="
+    while True:
+        try:
+            display("here in 'try'")
+            # continue
+            break
+            # raise RuntimeError('test')
+        except:
+            display("here in 'except'")
+            # continue
+            break
+        finally:
+            display("here in 'finally'")
+
+
 if __name__ == "__main__":
-    TryExceptDemo()
-    MyExceptionDemo()
-    ThreadExceptDemo()
-    print_ex_stack()
+    # TryExceptDemo()
+    # MyExceptionDemo()
+    # ThreadExceptDemo()
+    # print_ex_stack()
+    finally_in_loop()

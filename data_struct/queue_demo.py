@@ -60,7 +60,7 @@ class Producer(threading.Thread):
         finish_flag = True
         print 'produce ALL'
 
-mutex = threading.Lock()
+
 def single_give_take():
     producer = Producer('producer', 50)
     producer.start()
@@ -86,6 +86,7 @@ def multi_give_take():
 
 finish_flag = False
 q = Queue.Queue(10)
+mutex = threading.Lock()
 if __name__ == "__main__":
-    #single_give_take()
-    multi_give_take()
+    single_give_take()
+    # multi_give_take()
