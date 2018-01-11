@@ -4,10 +4,12 @@ multiprocessing.pool.ThreadPool demo
 ----------------------------
 NOTE:
     1. 线程函数只能有一个参数: 下方'process','thr_tsk'只能带一个参数
+    2. 在multiprocessing中用其Lock, 在threading中用对应的Lock
 """
 from time import sleep
-import threading
 from multiprocessing.pool import ThreadPool
+from multiprocessing import Lock
+# from threading import Lock
 
 
 def process(item):
@@ -27,8 +29,8 @@ def thr_tsk(param):
 
 
 if __name__ == '__main__':
-    mutex = threading.Lock()
-
+    # mutex = threading.Lock()
+    mutex = Lock()
     """
     items = range(0, 50)
     print 'pool_default-----------------'

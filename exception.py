@@ -165,9 +165,26 @@ def finally_in_loop():
             display("here in 'finally'")
 
 
+def catch_specific_err():
+    """
+    catch a specific err, which raise others
+    :return:
+    """
+    try:
+        raise ArithmeticError('test')
+        # raise RuntimeError('test')
+    except ArithmeticError, err:
+        print "here catched an 'ArithmeticError':", err
+        pass
+    except:
+        print "an err catched by default 'except'"
+        raise
+
+
 if __name__ == "__main__":
     # TryExceptDemo()
     # MyExceptionDemo()
     # ThreadExceptDemo()
     # print_ex_stack()
-    finally_in_loop()
+    # finally_in_loop()
+    catch_specific_err()
