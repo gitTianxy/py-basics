@@ -11,6 +11,7 @@ import xlrd
 from os import walk
 from os.path import isfile, join
 from os import listdir
+import csv
 
 
 def load_json(path):
@@ -34,6 +35,14 @@ def read_excel():
     # get column
     for colx in range(0, ncols):
         print sheet1.col_values(colx)
+
+
+def read_csv():
+    path = 'path_to_csv_file'
+    with open(path, 'rb') as f:
+        rd = csv.reader(f)
+        for row in rd:
+            print 'row elements:', row
 
 
 def read(path):

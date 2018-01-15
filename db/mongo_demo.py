@@ -197,3 +197,6 @@ if __name__ == "__main__":
 
     # bulk operations
     bulk_opts()
+
+    # drop collection: db.collection.drop()
+
