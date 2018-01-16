@@ -237,12 +237,32 @@ class GeneratorDemo:
 class RemoveDemo:
     def __init__(self):
         print '------------- REMOVE demo ---------------'
+        self.rm_obj()
+        self.rm_by_idx()
+
+    def rm_obj(self):
+        '''
+        remove the 1st occurrence
+        '''
         l1 = range(0, 10)
+        l1.extend(range(0, 10))
         print "l1 before remove:", l1
-        for i in l1:
-            if i % 2 == 0:
-                l1.remove(i)
+        for obj in range(0, 10):
+            if obj % 2 == 0:
+                l1.remove(obj)
         print "l1 after remove:", l1
+
+    def rm_by_idx(self):
+        l = range(0, 10)
+        print "list BEFORE remove:", l
+        i = 0
+        llen = len(l)
+        while i < llen:
+            if l[i] % 2 == 0:
+                l.pop(i)
+                llen -= 1
+            i += 1
+        print "list AFTER remove:", l
 
 
 if __name__ == "__main__":
@@ -262,6 +282,3 @@ if __name__ == "__main__":
     IterateDemo(num_list)
     GeneratorDemo()
     RemoveDemo()
-    # range demo
-    for i in range(256, 0, -1):
-        print i

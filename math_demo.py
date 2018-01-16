@@ -20,6 +20,8 @@ print "2^3, 2.0^3.0--use '**': %s, %s" % (2 ** 3, 2.0 ** 3.0)
 print "2^3, 2.0^3.0--use 'math.pow()': %s, %s" % (math.pow(2, 3), math.pow(2.0, 3.0))
 print "sqrt(4): ", math.sqrt(4)
 
+print "%s mod %s: %s" % (122, 2, 122 % 2)
+
 # comparison functions
 print '2 is less than 3: ', cmp(2, 3) == -1
 print 'max in {1,2,3,4} is: ', max(1, 2, 3, 4)
