@@ -261,7 +261,8 @@ class RemoveDemo:
             if l[i] % 2 == 0:
                 l.pop(i)
                 llen -= 1
-            i += 1
+            else:
+                i += 1
         print "list AFTER remove:", l
 
 
