@@ -57,6 +57,7 @@ for num in xrange(0, 10, 2):
     print num
 
 print '2/3=%s, float(2)/float(3)=%s, 2//3=%s' % (2/3, float(2)/float(3), 2//3)
+print '10/4=%s, float(10)/float(4)=%s, 10//4=%s' % (10/4, float(10)/float(4), 10//4)
 
 
 # random.randomrange example
