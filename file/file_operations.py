@@ -5,9 +5,12 @@ file operations other than w/r
 1. list file in folder: os.walk, os.listdir
 2. check exist: os.path.isfile
 3. del file: os.remove
+4. compress/uncompress file: gzip
+
 """
 import os
 import errno
+import gzip, shutil
 
 
 def list_files(folder):
@@ -47,6 +50,30 @@ def del_file(fpath):
     #     os.remove(fpath)
 
 
+def gzip_content(c, dest):
+    '''
+    compress content & write it into a destination file
+    '''
+    with gzip.open(dest, 'wb') as f:
+        f.write(c)
+
+
+def gzip_file(src, dest):
+    '''
+    compress source file into destination files
+    '''
+    with open(src, 'rb') as f_src, gzip.open(dest, 'wb') as f_dest:
+        shutil.copyfileobj(f_src, f_dest)
+
+
+def ungzip_file(src, dest):
+    '''
+    uncompress src zip file into destination file
+    '''
+    with gzip.open(src, 'rb') as f_in, open(dest, 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+
+
 if __name__ == '__main__':
     # list file (recursively)
     print '---list file'
@@ -64,3 +91,8 @@ if __name__ == '__main__':
     # del file
     print '---delete file'
     del_file('../data/2010.01.01.log')
+    # compress
+    gzip_content('hello, gzip', '../data/hello.gz')
+    gzip_file('../data/fileinfo_445792.json', '../data/fileinfo_445792.json.gz')
+    # uncompress
+    ungzip_file('../data/hello.gz', '../data/hello-gzip.txt')
