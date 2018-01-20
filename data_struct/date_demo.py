@@ -15,3 +15,8 @@ ts = time.mktime(start.timetuple())
 # ts 2 datetime
 print 'next-day: ', datetime.datetime.fromtimestamp(ts + 24*3600)
 
+# time comparision
+compt = datetime.datetime.strptime('2018-01-17', '%Y-%m-%d')
+now = datetime.datetime.now()
+print '%s after %s: %s' % (now, compt, now > compt)
+print '%s before %s: %s' % (now, compt, now < compt)
