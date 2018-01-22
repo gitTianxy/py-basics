@@ -33,7 +33,7 @@ class DateUtils:
             raise ValueError('error of input date_str or pattern')
 
     @staticmethod
-    def dt2str(date_time, pattern):
+    def dt2str(date_time, pattern=DATE_PATTERN_LONG):
         """
         transform 'date_time' to a date-string of certain 'pattern'
         :param date_time:
