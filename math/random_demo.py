@@ -5,6 +5,7 @@ random generation within a range
 shuffle/disorderordered list
 """
 import random
+import numpy
 
 # random choice from list
 nums = range(1, 6)
@@ -12,8 +13,30 @@ print "randomly choice an element from %s: %s" % (nums, random.choice(nums))
 print "randomly choice an element from %s: %s" % (range(0, 10), random.randrange(0, 10))
 print "randomly choice an element from %s: %s" % (range(0, 10, 2), random.randrange(0, 10, 2))
 
-# random generation within a range
+"""
+random generation within a range
+"""
+# numpy.random.uniform([low, high, size])        均匀分布随机变量
+print "randomly generate a number within [0, 1):", numpy.random.uniform(0, 1)
 print "randomly generate a number within [0, 1):", random.random()
+
+# numpy.random.beta(a, b[, size])                  Beta分布随机变量
+
+# numpy.random.binomial(n, p[, size])            二项分布随机变量
+
+# numpy.random.chisquare(df[, size])            卡方分布随机变量
+
+# numpy.random.dirichlet(alpha[, size])           狄利克雷分布随机变量
+
+# numpy.random.exponential([scale, size])     指数分布随机变量
+
+# numpy.random.geometric(p[, size])               几何分布随机变量
+
+# numpy.random.normal([loc, scale, size])        正态分布随机变量
+
+# numpy.random.poisson([lam, size])                泊松分布随机变量
+
+# numpy.random.wald(mean, scale[, size])        Wald分布随机变量
 
 # shuffle ordered list
 nums = range(0, 10)
