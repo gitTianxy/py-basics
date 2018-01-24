@@ -266,6 +266,17 @@ class RemoveDemo:
         print "list AFTER remove:", l
 
 
+def range_demo():
+    """
+    1. range(start, end, step): 用于返回一个列表
+    1. xrange(start, end, step): 用于遍历
+    :return:
+    """
+    print range(0, 10, 2)
+    for num in xrange(1, 10, 2):
+        print num
+
+
 if __name__ == "__main__":
     # prepare data
     num_list = []
@@ -283,3 +294,4 @@ if __name__ == "__main__":
     IterateDemo(num_list)
     GeneratorDemo()
     RemoveDemo()
+    range_demo()
